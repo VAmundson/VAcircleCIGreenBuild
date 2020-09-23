@@ -6,20 +6,46 @@ jobs:
     steps:
       - checkout
       - run: echo "A first hello from Veronica"
-      - run: sleep 5
-  test:
+      - run: sleep 3
+      
+      
+  testa:
     docker:
       - image: circleci/ruby:2.4.1
     steps:
       - checkout
-      - run: echo "A more familiar hi from Veronica"
-      - run: sleep 5
+      - run: echo "Testa also from Veronica"
+      - run: sleep 3
+  testb:
+    docker:
+      - image: circleci/ruby:2.4.1
+    steps:
+      - checkout
+      - run: echo "Testb, Veronica"
+      - run: sleep 3
+      
+      
+  deploy:
+    docker:
+      - image: circleci/ruby:2.4.1
+    steps:
+      - checkout
+      - run: echo "Deploy from Veronica"
+      - run: sleep 3
+      
+      
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - test:
-          # only run this job if build succeeds
+      - testa:
           requires:
-            - build
+            - build 
+      - testb:
+          requires:
+            - build 
+      - deploy:
+          requires:
+            - testa
+            - testb
